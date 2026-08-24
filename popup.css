@@ -1,0 +1,285 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 380px;
+  max-height: 580px;
+  overflow-y: auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0f1419;
+  color: #e7e9ea;
+}
+
+.container {
+  padding: 16px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.logo h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1d9bf0;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: #71767b;
+}
+
+/* Status Bar */
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #161d23;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #2f3336;
+  font-size: 13px;
+}
+
+.status-bar.running {
+  background: #0c1a12;
+  border-color: #00ba7c;
+}
+
+.status-bar.error {
+  background: #1a0c0c;
+  border-color: #f4212e;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Action Groups */
+.action-group {
+  margin-bottom: 12px;
+}
+
+.action-group h2 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.action-desc {
+  font-size: 11px;
+  color: #71767b;
+  margin-bottom: 10px;
+}
+
+.controls {
+  padding: 10px;
+  background: #161d23;
+  border-radius: 8px;
+  border: 1px solid #2f3336;
+}
+
+/* Sliders */
+.slider-group {
+  margin-bottom: 10px;
+}
+
+.slider-group label {
+  font-size: 12px;
+  color: #71767b;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.slider-row input[type="range"] {
+  flex: 1;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #2f3336;
+  border-radius: 2px;
+  outline: none;
+}
+
+.slider-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #1d9bf0;
+  cursor: pointer;
+  border: 2px solid #0f1419;
+}
+
+.slider-row span {
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 36px;
+  text-align: right;
+  color: #1d9bf0;
+}
+
+/* Buttons */
+.btn-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-danger {
+  background: #f4212e;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #dc1d28;
+}
+
+.btn-warning {
+  background: #ffad1f;
+  color: #0f1419;
+}
+
+.btn-warning:hover {
+  background: #e6a01a;
+}
+
+.btn-secondary {
+  background: #2f3336;
+  color: #e7e9ea;
+}
+
+.btn-secondary:hover {
+  background: #3a3d41;
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: #2f3336;
+  margin: 12px 0;
+}
+
+/* Log Section */
+.log-section {
+  margin-top: 12px;
+}
+
+.log-section h3 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #71767b;
+}
+
+.log-box {
+  background: #161d23;
+  border: 1px solid #2f3336;
+  border-radius: 8px;
+  padding: 8px;
+  max-height: 120px;
+  overflow-y: auto;
+  font-size: 11px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.log-entry {
+  padding: 2px 0;
+  border-bottom: 1px solid #1a1f25;
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+}
+
+.log-entry.info {
+  color: #71767b;
+}
+
+.log-entry.success {
+  color: #00ba7c;
+}
+
+.log-entry.error {
+  color: #f4212e;
+}
+
+.log-entry.warning {
+  color: #ffad1f;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid #2f3336;
+}
+
+footer p {
+  font-size: 10px;
+  color: #71767b;
+}
+
+.version {
+  margin-top: 4px;
+  opacity: 0.5;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2f3336;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3d41;
+}

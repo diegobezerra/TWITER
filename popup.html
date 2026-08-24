@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>X Post Cleaner</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        <h1>Post Cleaner</h1>
+      </div>
+      <p class="subtitle">Apaga posts, retweets e respostas automaticamente</p>
+    </header>
+
+    <div id="status-bar" class="status-bar hidden">
+      <div class="status-icon">⏳</div>
+      <span id="status-text">Pronto</span>
+    </div>
+
+    <div class="actions">
+      <div class="action-group">
+        <h2>🗑️ Apagar Posts</h2>
+        <p class="action-desc">Remove todos os seus posts da timeline</p>
+        <div class="controls">
+          <div class="slider-group">
+            <label for="post-delay">Delay entre posts:</label>
+            <div class="slider-row">
+              <input type="range" id="post-delay" min="1000" max="10000" value="3000" step="500">
+              <span id="post-delay-value">3.0s</span>
+            </div>
+          </div>
+          <div class="slider-group">
+            <label for="post-max">Máximo de posts:</label>
+            <div class="slider-row">
+              <input type="range" id="post-max" min="1" max="100" value="10">
+              <span id="post-max-value">10</span>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button id="btn-delete-posts" class="btn btn-danger">🗑️ Apagar Posts</button>
+            <button id="btn-stop-posts" class="btn btn-secondary hidden">⏹️ Parar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="action-group">
+        <h2>🔄 Desfazer Retweets</h2>
+        <p class="action-desc">Remove todos os retweets da timeline</p>
+        <div class="controls">
+          <div class="slider-group">
+            <label for="rt-delay">Delay entre retweets:</label>
+            <div class="slider-row">
+              <input type="range" id="rt-delay" min="1000" max="10000" value="3000" step="500">
+              <span id="rt-delay-value">3.0s</span>
+            </div>
+          </div>
+          <div class="slider-group">
+            <label for="rt-max">Máximo de retweets:</label>
+            <div class="slider-row">
+              <input type="range" id="rt-max" min="1" max="100" value="10">
+              <span id="rt-max-value">10</span>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button id="btn-delete-rts" class="btn btn-danger">🔄 Desfazer RTs</button>
+            <button id="btn-stop-rts" class="btn btn-secondary hidden">⏹️ Parar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="action-group">
+        <h2>💬 Apagar Respostas</h2>
+        <p class="action-desc">Remove suas respostas/replies da timeline</p>
+        <div class="controls">
+          <div class="slider-group">
+            <label for="reply-delay">Delay entre respostas:</label>
+            <div class="slider-row">
+              <input type="range" id="reply-delay" min="1000" max="10000" value="3000" step="500">
+              <span id="reply-delay-value">3.0s</span>
+            </div>
+          </div>
+          <div class="slider-group">
+            <label for="reply-max">Máximo de respostas:</label>
+            <div class="slider-row">
+              <input type="range" id="reply-max" min="1" max="100" value="10">
+              <span id="reply-max-value">10</span>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button id="btn-delete-replies" class="btn btn-danger">💬 Apagar Respostas</button>
+            <button id="btn-stop-replies" class="btn btn-secondary hidden">⏹️ Parar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="action-group">
+        <h2>⚡ Ação Rápida</h2>
+        <div class="btn-row">
+          <button id="btn-delete-all" class="btn btn-warning">🔥 Apagar Tudo (Posts + RTs + Respostas)</button>
+          <button id="btn-stop-all" class="btn btn-secondary hidden">⏹️ Parar Tudo</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="action-group">
+        <h2>🔍 Debug</h2>
+        <p class="action-desc">Inspetionar o DOM da página para diagnosticar problemas</p>
+        <div class="btn-row">
+          <button id="btn-debug" class="btn btn-secondary">🔍 Inspecionar DOM</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="log-section">
+      <h3>📋 Log</h3>
+      <div id="log" class="log-box">
+        <div class="log-entry info">Aguardando ação...</div>
+      </div>
+    </div>
+
+    <footer>
+      <p>⚠️ Use com cuidado! As ações são irreversíveis.</p>
+      <p class="version">v1.0.0</p>
+    </footer>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
