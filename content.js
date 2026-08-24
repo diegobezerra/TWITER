@@ -195,12 +195,39 @@
   }
 
   /**
+   * Check if a tweet was authored by the logged-in user.
+   * Strategy: look for UserAvatar-Container-{handle} data-testid inside
+   * the tweet, and compare with our own handle.
+   */
+  function isOwnAuthor(article) {
+    const handle = getOwnHandle();
+    if (!handle) return false;
+
+    // Check avatar containers: data-testid="UserAvatar-Container-{handle}"
+    const avatarContainers = article.querySelectorAll('[data-testid]');
+    for (const el of avatarContainers) {
+      const testid = el.getAttribute('data-testid') || '';
+      if (testid.toLowerCase().includes('useravatar-container-' + handle.toLowerCase())) {
+        return true;
+      }
+    }
+
+    // Fallback: check if the @handle text appears in the tweet's user name area
+    const nameEl = article.querySelector('[data-testid="User-Name"]');
+    if (nameEl) {
+      const nameText = nameEl.textContent.toLowerCase();
+      if (nameText.includes('@' + handle.toLowerCase())) return true;
+    }
+
+    return false;
+  }
+
+  /**
    * Detect a reply using multiple strategies:
    * 1. socialContext with "Replying to" / "Respondendo"
    * 2. Text containing "replying to" in spans
-   * 3. On the /with_replies tab, ALL non-retweet tweets are replies or posts
-   *    — but we can check for conversation indicators
-   * 4. Check if the tweet has a "in-reply-to" thread link
+   * 3. "show this thread" links
+   * 4. On /with_replies tab: any tweet that is ours (the tab mixes posts + replies)
    */
   function isReply(article) {
     // Strategy 1: socialContext
@@ -210,7 +237,7 @@
       if (t.includes('reply') || t.includes('respond')) return true;
     }
 
-    // Strategy 2: Look for "Replying to" / "Respondendo" text anywhere in the tweet
+    // Strategy 2: Look for "Replying to" / "Respondendo" text
     const allEls = article.querySelectorAll('span, a, div');
     for (const el of allEls) {
       const t = (el.textContent || '').toLowerCase();
@@ -220,17 +247,16 @@
       }
     }
 
-    // Strategy 3: Check for conversation thread indicators
-    // On X.com, replies in a thread have a connecting line or are nested
-    // under a parent tweet. Check for "show this thread" link.
-    const threadLinks = article.querySelectorAll('a');
-    for (const link of threadLinks) {
+    // Strategy 3: "show this thread" links
+    for (const link of article.querySelectorAll('a')) {
       const t = (link.textContent || '').toLowerCase();
       if (t.includes('show this thread') || t.includes('mostrar esta thread') ||
-          t.includes('ver esta conversa')) {
-        return true;
-      }
+          t.includes('ver esta conversa')) return true;
     }
+
+    // Strategy 4: On /with_replies tab, if the tweet is by the logged-in user,
+    // treat it as a reply (the tab shows all user content including replies)
+    if (isOnRepliesTab() && isOwnAuthor(article)) return true;
 
     return false;
   }
@@ -451,6 +477,11 @@
 
     sendProgress(`Iniciando exclusão de respostas (máx: ${maxItems})`);
 
+    // Log author detection for debugging
+    const allTweets = getTweetArticles();
+    const ownCount = allTweets.filter(isOwnAuthor).length;
+    sendProgress(`Encontrados ${allTweets.length} tweets, ${ownCount} são seus`);
+
     while (isRunning && processedCount < maxItems && !shouldStop) {
       const replies = getTweetArticles().filter(isReply);
 
@@ -596,7 +627,8 @@
         const t = (a.textContent || '').toLowerCase();
         return t.includes('show this thread') || t.includes('mostrar esta thread') || t.includes('ver esta conversa');
       });
-      sendProgress(`  reply indicators: text=${hasReplyText ? '✅' : '❌'}  threadLink=${hasThreadLink ? '✅' : '❌'}`, 'info');
+      const ownAuthor = isOwnAuthor(tweet);
+      sendProgress(`  own author: ${ownAuthor ? '✅ YES (SEU)' : '❌ NO'}  reply indicators: text=${hasReplyText ? '✅' : '❌'}  threadLink=${hasThreadLink ? '✅' : '❌'}`, ownAuthor ? 'success' : 'info');
 
       const tweetText = tweet.textContent.substring(0, 120).replace(/\s+/g, ' ').trim();
       sendProgress(`  text: "${tweetText}…"`, 'info');
